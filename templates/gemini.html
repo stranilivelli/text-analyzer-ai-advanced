@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisi con Gemini AI</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}" />
+    <meta name="apple-mobile-web-app-title" content="TextAnalyzer" />
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header class="main-header">
+            <div class="header-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="https://salvatorepaone.it" class="logo-link">
+                        <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Logo" class="logo-img">
+
+                        <div class="logo-info">
+                            <span class="logo-name">Salvatore Paone</span>
+                            <span class="logo-tagline">Tecnologie dell'informazione e della comunicazione</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Hamburger Menu -->
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <!-- Navigation Menu -->
+                <nav class="nav-menu" id="navMenu">
+                    <ul>
+                        <li><a href="/" class="nav-link">Analisi NLTK</a></li>
+                        <li><a href="/gemini" class="nav-link active">Analisi Gemini AI</a></li>
+                        <li><a href="/compare" class="nav-link">Confronto</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="header-cta">
+                    <h1>Analisi Semantica con AI</h1>
+                    <p class="cta-subtitle">Comprensione profonda del significato</p>
+                </div>
+                <h2>di Salvatore Paone</h2>
+                <h3>Relatore: Prof. M. Mancini</h3>
+                <p class="subtitle">Analisi avanzata con Google Gemini AI</p>
+            </section>
+
+            <!-- Input Section -->
+            <section class="input-section">
+                <label for="textInput">Inserisci il testo da analizzare:</label>
+                <textarea id="textInput" placeholder="Incolla qui il tuo testo in italiano..." rows="10"></textarea>
+
+                <!-- AI Settings Section -->
+                <div class="ai-settings-section">
+                    <!-- Preset Modes -->
+                    <div class="preset-modes">
+                        <label class="section-label">🎯 Modalità AI:</label>
+                        <div class="mode-options">
+                            <label class="mode-option">
+                                <input type="radio" name="aiMode" value="deterministic">
+                                <span class="mode-card">
+                                    <strong>🔒 Deterministico</strong>
+                                    <small>Risultati riproducibili</small>
+                                </span>
+                            </label>
+                            <label class="mode-option">
+                                <input type="radio" name="aiMode" value="balanced" checked>
+                                <span class="mode-card">
+                                    <strong>⚖️ Bilanciato</strong>
+                                    <small>Consigliato</small>
+                                </span>
+                            </label>
+                            <label class="mode-option">
+                                <input type="radio" name="aiMode" value="creative">
+                                <span class="mode-card">
+                                    <strong>🎨 Creativo</strong>
+                                    <small>Più variabile</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Settings Toggle -->
+                    <button type="button" class="advanced-toggle" id="advancedToggle">
+                        <span class="toggle-icon">⚙️</span>
+                        <span class="toggle-text">Impostazioni Avanzate</span>
+                        <span class="toggle-arrow">▼</span>
+                    </button>
+
+                    <!-- Advanced Controls (Hidden by default) -->
+                    <div class="advanced-controls hidden" id="advancedControls">
+                        <div class="info-box">
+                            <p>ℹ️ Modifica questi parametri per controllare il comportamento del modello AI.</p>
+                        </div>
+
+                        <!-- Temperature -->
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="temperatureSlider">Temperature</label>
+                                <span class="control-value" id="temperatureValue">0.7</span>
+                            </div>
+                            <input type="range" id="temperatureSlider" 
+                                   min="0" max="1" step="0.1" value="0.7" 
+                                   class="slider">
+                            <div class="control-description">
+                                <span class="desc-icon">💡</span>
+                                <span>Controlla la creatività: 0 = deterministico, 1 = molto creativo</span>
+                            </div>
+                        </div>
+
+                        <!-- Top P -->
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="topPSlider">Top P (Nucleus Sampling)</label>
+                                <span class="control-value" id="topPValue">0.95</span>
+                            </div>
+                            <input type="range" id="topPSlider" 
+                                   min="0" max="1" step="0.05" value="0.95" 
+                                   class="slider">
+                            <div class="control-description">
+                                <span class="desc-icon">🎲</span>
+                                <span>Varietà nelle risposte: più alto = più opzioni considerate</span>
+                            </div>
+                        </div>
+
+                        <!-- Top K -->
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="topKSlider">Top K</label>
+                                <span class="control-value" id="topKValue">40</span>
+                            </div>
+                            <input type="range" id="topKSlider" 
+                                   min="1" max="100" step="1" value="40" 
+                                   class="slider">
+                            <div class="control-description">
+                                <span class="desc-icon">🔢</span>
+                                <span>Numero di token considerati: più basso = più focalizzato</span>
+                            </div>
+                        </div>
+
+                        <!-- Max Output Tokens -->
+                        <div class="control-group">
+                            <div class="control-header">
+                                <label for="maxTokensSlider">Max Output Tokens</label>
+                                <span class="control-value" id="maxTokensValue">8192</span>
+                            </div>
+                            <input type="range" id="maxTokensSlider" 
+                                   min="512" max="8192" step="256" value="8192" 
+                                   class="slider">
+                            <div class="control-description">
+                                <span class="desc-icon">📝</span>
+                                <span>Lunghezza massima della risposta (1 token ≈ 4 caratteri)</span>
+                            </div>
+                        </div>
+
+                        <!-- Reset Button -->
+                        <button type="button" class="btn btn-secondary btn-sm" id="resetDefaults">
+                            🔄 Ripristina Valori Predefiniti
+                        </button>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="analyzeBtn" class="btn btn-primary">Analizza con AI</button>
+                    <button id="clearBtn" class="btn btn-secondary">Pulisci</button>
+                    <button id="exampleBtn" class="btn btn-secondary">Carica Esempio</button>
+                </div>
+            </section>
+
+            <!-- Loading -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Analisi AI in corso...</p>
+            </div>
+
+            <!-- Results Section -->
+            <section id="results" class="results hidden">
+                <!-- Complexity Score Card -->
+                <div class="card score-card">
+                    <h2>Punteggio Complessità AI</h2>
+                    <div class="score-display">
+                        <div class="score-value" id="complexityScore">-</div>
+                        <div class="score-category" id="complexityCategory">-</div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📝</div>
+                        <div class="stat-label">Parole Totali</div>
+                        <div class="stat-value" id="totalWords">-</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-label">Frasi Totali</div>
+                        <div class="stat-value" id="totalSentences">-</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📏</div>
+                        <div class="stat-label">Lunghezza Media Frase</div>
+                        <div class="stat-value" id="avgSentenceLength">-</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-label">Diversità Lessicale</div>
+                        <div class="stat-value" id="ttr">-</div>
+                    </div>
+                </div>
+
+                <!-- Gulpease Index -->
+                <div class="card">
+                    <h3>📈 Indice Gulpease (AI)</h3>
+                    <div class="metric-row">
+                        <span class="metric-value" id="gulpease">-</span>
+                        <span class="metric-description" id="gulpeaseDesc">-</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="gulpeaseProgress"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>Difficile (0)</span>
+                        <span>Facile (100)</span>
+                    </div>
+                </div>
+
+                <!-- Semantic Analysis (NUOVO) -->
+                <div class="card">
+                    <h3>🧠 Analisi Semantica</h3>
+                    <div class="semantic-grid">
+                        <div class="semantic-item">
+                            <span class="semantic-label">Difficoltà Concettuale:</span>
+                            <span class="semantic-value" id="conceptualDifficulty">-</span>
+                        </div>
+                        <div class="semantic-item">
+                            <span class="semantic-label">Livello Scolastico:</span>
+                            <span class="semantic-value" id="schoolLevel">-</span>
+                        </div>
+                        <div class="semantic-item">
+                            <span class="semantic-label">Registro Linguistico:</span>
+                            <span class="semantic-value" id="register">-</span>
+                        </div>
+                        <div class="semantic-item">
+                            <span class="semantic-label">Complessità Argomentativa:</span>
+                            <span class="semantic-value" id="reasoningComplexity">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Terms (NUOVO) -->
+                <div class="card">
+                    <h3>🔬 Termini Tecnici Rilevati</h3>
+                    <div id="technicalTerms" class="word-list">
+                        <!-- Popolato dinamicamente -->
+                    </div>
+                </div>
+
+                <!-- Suggestions (NUOVO) -->
+                <div class="card">
+                    <h3>💡 Suggerimenti per Semplificazione</h3>
+                    <ul id="suggestions" class="suggestions-list">
+                        <!-- Popolato dinamicamente -->
+                    </ul>
+                </div>
+
+                <!-- Critical Points (NUOVO) -->
+                <div class="card">
+                    <h3>⚠️ Punti Critici</h3>
+                    <ul id="criticalPoints" class="critical-list">
+                        <!-- Popolato dinamicamente -->
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Progetto Linguistica Computazionale - Analisi NLP con Gemini AI</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app-gemini.js') }}"></script>
+</body>
+
+</html>
