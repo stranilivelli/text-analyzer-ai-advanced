@@ -25,26 +25,24 @@ document.addEventListener('click', (e) => {
 // ========== AI PARAMETERS CONTROLS ==========
 
 // Preset configurations
+// NOTE: max_output_tokens removed from UI - hardcoded in backend to 8192
 const AI_PRESETS = {
     deterministic: {
         temperature: 0.0,
         top_p: 0.95,
         top_k: 1,
-        max_output_tokens: 8192,  // ← AUMENTATO
         description: 'Risultati riproducibili e consistenti'
     },
     balanced: {
         temperature: 0.7,
         top_p: 0.95,
         top_k: 40,
-        max_output_tokens: 8192,  // ← AUMENTATO
         description: 'Bilanciamento tra creatività e coerenza'
     },
     creative: {
         temperature: 1.0,
         top_p: 1.0,
         top_k: 64,
-        max_output_tokens: 8192,  // ← AUMENTATO
         description: 'Massima varietà nelle risposte'
     }
 };
@@ -55,7 +53,6 @@ const advancedControls = document.getElementById('advancedControls');
 const temperatureSlider = document.getElementById('temperatureSlider');
 const topPSlider = document.getElementById('topPSlider');
 const topKSlider = document.getElementById('topKSlider');
-const maxTokensSlider = document.getElementById('maxTokensSlider');
 const resetDefaultsBtn = document.getElementById('resetDefaults');
 const modeRadios = document.querySelectorAll('input[name="aiMode"]');
 
@@ -63,7 +60,6 @@ const modeRadios = document.querySelectorAll('input[name="aiMode"]');
 const temperatureValue = document.getElementById('temperatureValue');
 const topPValue = document.getElementById('topPValue');
 const topKValue = document.getElementById('topKValue');
-const maxTokensValue = document.getElementById('maxTokensValue');
 
 // Toggle advanced controls
 advancedToggle.addEventListener('click', () => {
@@ -84,10 +80,6 @@ topKSlider.addEventListener('input', (e) => {
     topKValue.textContent = e.target.value;
 });
 
-maxTokensSlider.addEventListener('input', (e) => {
-    maxTokensValue.textContent = e.target.value;
-});
-
 // Apply preset when mode changes
 modeRadios.forEach(radio => {
     radio.addEventListener('change', (e) => {
@@ -101,13 +93,11 @@ function applyPreset(preset) {
     temperatureSlider.value = preset.temperature;
     topPSlider.value = preset.top_p;
     topKSlider.value = preset.top_k;
-    maxTokensSlider.value = preset.max_output_tokens;
 
     // Update displays
     temperatureValue.textContent = preset.temperature.toFixed(1);
     topPValue.textContent = preset.top_p.toFixed(2);
     topKValue.textContent = preset.top_k;
-    maxTokensValue.textContent = preset.max_output_tokens;
 }
 
 // Reset to balanced defaults
@@ -117,17 +107,17 @@ resetDefaultsBtn.addEventListener('click', () => {
 });
 
 // Get current AI parameters
+// NOTE: max_output_tokens not sent - backend uses default 8192
 function getAIParameters() {
     return {
         temperature: parseFloat(temperatureSlider.value),
         top_p: parseFloat(topPSlider.value),
         top_k: parseInt(topKSlider.value),
-        max_output_tokens: parseInt(maxTokensSlider.value),
         candidate_count: 1
     };
 }
 
-// ========== CONFRONTO NLTK vs GEMINI ==========
+// ========== NLTK vs GEMINI COMPARISON ==========
 
 const textInput = document.getElementById('textInput');
 const compareBtn = document.getElementById('compareBtn');

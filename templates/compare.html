@@ -69,7 +69,7 @@
             <!-- Input Section -->
             <section class="input-section">
                 <label for="textInput">Inserisci il testo da analizzare:</label>
-                <textarea id="textInput" placeholder="Incolla qui il tuo testo in italiano..." rows="10"></textarea>
+                <textarea id="textInput" placeholder="Incolla qui il testo in italiano..." rows="10"></textarea>
 
                 <div class="filter-options">
                     <label class="checkbox-label">
@@ -92,8 +92,8 @@
                             <label class="mode-option">
                                 <input type="radio" name="aiMode" value="deterministic">
                                 <span class="mode-card">
-                                    <strong>🔒 Deterministico</strong>
-                                    <small>Risultati riproducibili</small>
+                                    <strong>🎯 Focalizzato</strong>
+                                    <small>Minore variabilità</small>
                                 </span>
                             </label>
                             <label class="mode-option">
@@ -132,9 +132,8 @@
                                 <label for="temperatureSlider">Temperature</label>
                                 <span class="control-value" id="temperatureValue">0.7</span>
                             </div>
-                            <input type="range" id="temperatureSlider" 
-                                   min="0" max="1" step="0.1" value="0.7" 
-                                   class="slider">
+                            <input type="range" id="temperatureSlider" min="0" max="1" step="0.1" value="0.7"
+                                class="slider">
                             <div class="control-description">
                                 <span class="desc-icon">💡</span>
                                 <span>Controlla la creatività: 0 = deterministico, 1 = molto creativo</span>
@@ -147,9 +146,7 @@
                                 <label for="topPSlider">Top P (Nucleus Sampling)</label>
                                 <span class="control-value" id="topPValue">0.95</span>
                             </div>
-                            <input type="range" id="topPSlider" 
-                                   min="0" max="1" step="0.05" value="0.95" 
-                                   class="slider">
+                            <input type="range" id="topPSlider" min="0" max="1" step="0.05" value="0.95" class="slider">
                             <div class="control-description">
                                 <span class="desc-icon">🎲</span>
                                 <span>Varietà nelle risposte: più alto = più opzioni considerate</span>
@@ -162,29 +159,14 @@
                                 <label for="topKSlider">Top K</label>
                                 <span class="control-value" id="topKValue">40</span>
                             </div>
-                            <input type="range" id="topKSlider" 
-                                   min="1" max="100" step="1" value="40" 
-                                   class="slider">
+                            <input type="range" id="topKSlider" min="1" max="100" step="1" value="40" class="slider">
                             <div class="control-description">
                                 <span class="desc-icon">🔢</span>
                                 <span>Numero di token considerati: più basso = più focalizzato</span>
                             </div>
                         </div>
 
-                        <!-- Max Output Tokens -->
-                        <div class="control-group">
-                            <div class="control-header">
-                                <label for="maxTokensSlider">Max Output Tokens</label>
-                                <span class="control-value" id="maxTokensValue">4096</span>
-                            </div>
-                            <input type="range" id="maxTokensSlider" 
-                                   min="512" max="8192" step="256" value="4096" 
-                                   class="slider">
-                            <div class="control-description">
-                                <span class="desc-icon">📝</span>
-                                <span>Lunghezza massima della risposta (1 token ≈ 4 caratteri)</span>
-                            </div>
-                        </div>
+                        <!-- REMOVED: Max Output Tokens slider - hardcoded in backend to 8192 -->
 
                         <!-- Reset Button -->
                         <button type="button" class="btn btn-secondary btn-sm" id="resetDefaults">
@@ -328,7 +310,7 @@
                         <div class="card">
                             <h4>💡 Suggerimenti AI</h4>
                             <ul id="geminiSuggestions" class="suggestions-list">
-                                <!-- Popolato dinamicamente -->
+                                <!-- Populated dynamically -->
                             </ul>
                         </div>
                     </div>

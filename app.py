@@ -121,13 +121,18 @@ def analyze_text(text, filter_short_words=True, min_word_length=4):
     unique_words = len(set(words_clean))
     ttr = unique_words / total_words
     
-    # Classificazione lunghezza frasi
+    # Sentence length classification
     sentence_lengths = [len(word_tokenize(s, language='italian')) for s in sentences]
-    short = sum(1 for l in sentence_lengths if l < 10)
-    medium = sum(1 for l in sentence_lengths if 10 <= l <= 20)
-    long_sent = sum(1 for l in sentence_lengths if l > 20)
+    short = medium = long_sent = 0
+    for l in sentence_lengths:
+        if l < 10:
+            short += 1
+        elif l <= 20:
+            medium += 1
+        else:
+            long_sent += 1
     
-    # Punteggio complessità
+    # Complexity score
     complexity = 100 - gulpease
     if ttr > 0.7:
         complexity += 10
@@ -154,7 +159,7 @@ def analyze_text(text, filter_short_words=True, min_word_length=4):
         category = "Molto Complesso"
         color = "#ef4444"
     
-    # Parole più frequenti - CON FILTRO
+    # Most frequent words - WITH FILTER
     from collections import Counter
     
     if filter_short_words:
@@ -236,7 +241,7 @@ def analyze_with_gemini(text, ai_config=None):
         
         # Configura il modello CON parametri
         model = genai.GenerativeModel(
-            'gemini-flash-latest',
+            'gemini-2.5-flash',
             generation_config=generation_config
         )
         
